@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pais>
+	<nome> Canadá </nome>
+	<idioma> Inglês </idioma>
+	<capital> Ottawa </capital>
+	<moeda> Dólar Canadense ($) </moeda>
+	<prefixo> +1 </prefixo>
+	<geografia>
+		<clima> Continental (frio)</clima>
+		<costa> 7367 km </costa>
+		<pico> Neblina (3014 m) </pico>
+	</geografia>
+</pais>
