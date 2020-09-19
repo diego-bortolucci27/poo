@@ -1,7 +1,7 @@
 <?php
 	
 	/*
-		A classe venda possui métodos para atribuir e retornar um ID, bem como adicionar (addItem)
+		A classe venda possui métodos para atribuir e retornar um ID, bem como adicionar (addItem) e retornar (getItens) itens(produtos)
 	*/
 
 	class Venda
@@ -23,6 +23,10 @@
 		{
 			$this->itens[] = array($quantidade, $produto);
 		}
-	}
 
+		public function getItens
+		{
+			return $this->itens;
+		}
+	}
 ?>
