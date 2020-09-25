@@ -24,7 +24,7 @@
 			$this->itens[] = array($quantidade, $produto);
 		}
 
-		public function getItens
+		public function getItens()
 		{
 			return $this->itens;
 		}
