@@ -40,7 +40,7 @@
 			$sql = "SELECT max(id) as max FROM venda";
 			$result = self::$conn->query($sql);
 			$data = $result->fetch(PDO::FETCH_OBJ);
-			return 
+			return $data->max;
 		}
 	}
 ?>
