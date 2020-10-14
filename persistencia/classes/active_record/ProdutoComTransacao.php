@@ -19,13 +19,25 @@ Nesse programa, como estamos utilizando Active Record, incluimos métodos relati
 			self::$conn = $conn;
 		}
 
+		/*Sem transação
 		public static function find($id){
 			$sql = "SELECT * FROM produto where id = '$id' ";
 			print "$sql <br>";
 			$result = self::$conn->query($sql);
 			return $result->fetchObject(__CLASS__);
 		}
+		Com transação: 
+		$conn = Transaction::get();
+		$result = $conn->query($sql);
+		*/
 
+		public static function find($id){
+			$sql = "SELECT * FROM produto where id = '$id' ";
+			print "$sql <br>";
+			$conn = Transaction::get();//usa transação
+			$result = $conn->query($sql);//conectado ao bd, executa sql no bd
+			return $result->fetchObject(__CLASS__);
+		}
 		public static function all($filter = ''){
 			$sql = "SELECT * FROM produto ";
 			if ($filter){
@@ -65,12 +77,17 @@ Nesse programa, como estamos utilizando Active Record, incluimos métodos relati
 								" WHERE id = '{$this->id}'";
 			}
 			print "$sql <br>";
-			return self::$conn->exec($sql); //executa a instruçao SQL
+			$conn = Transaction::get();//uso de transação
+			$result = $conn->exec($sql); //executa a instruçao SQL
 		}//fecha o metodo save
 
 		private function getLastId(){
 			$sql = "SELECT max(id) as max FROM produto";
-			$result = self::$conn->query($sql); //executa o select e retorna os dados em $result
+			//$result = self::$conn->query($sql); //executa o select e retorna os dados em $result
+//com transação...
+			$conn = Transaction::get();//uso de transação
+			$result = $conn->exec($sql); //executa a instruçao SQL
+			//verificar erro aqui....
 			$data = $result->fetch(PDO::FETCH_OBJ);
 			return $data->max;
 		}
