@@ -14,7 +14,7 @@
 			file_put_contents($filename, ''); //Limpa o arquivo
 		}
 
-		//Define o método write como abstrato, portanto obrigatório implementar nas classes filhas
+		//Define o método write como abstrato, portanto obrigatório implementar nas classes filhas.
 
 		abstract function write($message);
 	}
