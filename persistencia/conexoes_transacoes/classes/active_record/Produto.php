@@ -1,6 +1,9 @@
 <?php
-	
-	class ProdutoGateway{
+/*
+O Design Pattern Active Record é como se fosse um "Row Data Gateway- RDG", porém acrescido de métodos de negócio. A diferença primordial é que RDG não apresenta método pertencente ao modelo de negócios, somente métodos de acesso À base de dados. Quando adicionamos lógica de negócio, ou seja, métodos que tratam de implementar características do modelo de negócio a um Row Data Gateway, temos um Active Record, podendo ser utilizado com o modelo de dados. Os Design Pattern TDG e RDG, proviam uma camada de acesso ao banco de dados para a camada superior (modelo de domínio). Com o Active Record temos uma única camada, na qual temos a lógica de negócios (modelo de domínio) e métodos de persistencia do objeto na base de dados (Gateway). Um Active Record deve prover o mesmo que um Row Data Gateway, além de implementar mátodos do modelo de domínio (lógica de negócios).
+Nesse programa, como estamos utilizando Active Record, incluimos métodos relativos ao modelo de negócios, como os métodos getMargemLucro() e registraCompra(). A presença desses métodos em uma classe que era um Row Data Gateway, torna essa clase um Active Record, ou seja, o objeto se comporta exatamente como um registro do BD e ainda oferece métodos relativos à lógica de negócios da aplicação.
+*/
+	class Produto{
 		private static $conn;
 		private $data;
 
@@ -71,5 +74,15 @@
 			$data = $result->fetch(PDO::FETCH_OBJ);
 			return $data->max;
 		}
+
+		public function getMargemLucro(){
+			return (($this->preco_venda - $this->preco_custo) / $this->preco_custo) * 100;
+		}
+
+		public function registraCompra($custo, $quantidade){
+			$this->custo = $custo;
+			$this->estoque += $quantidade;
+		}
 	}
+	
 ?>
