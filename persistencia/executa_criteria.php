@@ -16,11 +16,23 @@
 	$valor2 = $_POST['valor2'];
 
 
+	if(empty($cmbCampo1) AND empty($cmbOperador1) AND empty($valor1))
+	{
+	?>
+		<script>
+			window.alert('Verifique se os campos foram preenchidos');
+        	document.location.href = 'formBusca.php';
+		</script>
+	<?php
+	}
+
+	// Utilizando 2 critérios
+
 	if($opLogico == "AND ")
 	{
 		$criteria = new Criteria;
-		$criteria->add(new Filter('$cmbCampo1', '$cmbOperador1', '$valor1'));
-		$criteria->add(new Filter('idade', '>', 60));
+		$criteria->add(new Filter('$cmbCampo1', '$cmbOperador1', $valor1));
+		$criteria->add(new Filter('$cmbCampo2', '$cmbOperador2', $valor2));
 		print $criteria->dump() . "<br>";
 	}
 	
@@ -28,9 +40,11 @@
 	{
 		$criteria = new Criteria;
 		$criteria->add(new Filter('$cmbCampo1', '$cmbOperador1', '$valor1'), Expression::OR_OPERATOR);
-		$criteria->add(new Filter('idade', '>', 60), Expression::OR_OPERATOR);
+		$criteria->add(new Filter('$cmbCampo2', '$cmbOperador2', '$valor2'), Expression::OR_OPERATOR);
 		print $criteria->dump() . "<br>";
 	}
+
+	// Utilizando 1 Critério de Busca
 
 	$criteria = new Criteria;
 	$criteria->add(new Filter('$cmbCampo1', '$cmbOperador1', '$valor1'));
