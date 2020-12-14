@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <title>Busca</title>
 </head>
 <body>
@@ -11,10 +10,10 @@
     <center>
         <h1>Critérios de Pesquisa</h1>
         <br>
-        <form action="executa_criteria.php" method="POST">
+        <form action="executaCriteria.php" method="POST">
 
             <!-- 1º Critério de Busca -->
-            <div class="form-group col-md-6">
+            <div>
               <label for="">Filtrar por:</label>
               <select class="custom-select" id="cmbCampo1" name="cmbCampo1" required>
                   <option value="id">ID</option>
@@ -28,21 +27,21 @@
             </div>  
             <br>
 
-            <div class="form-group col-md-6">
+            <div>
               <label for="">Operador Relacional:</label>
               <select class="custom-select" id="cmbOperador1" name="cmbOperador1" required>
                   <option value="> ">Maior que</option>
                   <option value="< ">Menor que</option>
                   <option value=">= ">Maior igual</option>
                   <option value="<= ">Menor igual</option>
-                  <option value="<>">Diferente de</option>
+                  <option value="<> ">Diferente de</option>
                   <option value="NOT ">NOT</option>
                   <option value="LIKE ">LIKE</option>
               </select>
             </div>
             <br>
 
-            <div class="form-group col-md-6">  
+            <div>  
               <label for="">Valor da Pesquisa:</label>
                   <input class="form-control" type="text" name="txtValor1" id="valor1" placeholder="Ex: Porto Ferreira" required>
             </div>
@@ -50,7 +49,7 @@
             
             
               <!-- 2º Critério de Busca -->
-            <div class="form-group col-md-6">
+            <div>
               <label for="">Operador Lógico:</label><br>
               <label for=""><b>“Obrigatório escolher um
                 operador para consultas com 2 critérios"</b>
@@ -58,8 +57,8 @@
             </div>
             <br>
 
-            <div class="form-group col-md-6">
-              <select class="custom-select" id="cmbOpLogico" name="cmbOpLogico">
+            <div>
+              <select class="custom-select" id="cmbOpLogico" name="cmbOpLogico" required>
                   <option value="0" selected hidden>Escolher Operador</option>
                   <option value="AND ">E</option>
                   <option value="OR ">OU</option>
@@ -67,7 +66,7 @@
             </div>
             <br>
 
-            <div class="form-group col-md-6">
+            <div>
               <label for="">Filtrar por:</label>
               <select class="custom-select" id="cmbCampo2" name="cmbCampo2">
                   <option selected hidden >Filtro</option>
@@ -82,7 +81,7 @@
             </div>
             <br>
 
-            <div class="form-group col-md-6">
+            <div>
               <label for="">Operador Relacional:</label>
               <select class="custom-select" id="cmbOperador2" name="cmbOperador2">
                   <option selected hidden>Operador</option>
@@ -90,14 +89,14 @@
                   <option value="< ">Menor que</option>
                   <option value=">= ">Maior igual</option>
                   <option value="<= ">Menor igual</option>
-                  <option value="<>">Diferente de</option>
+                  <option value="<> ">Diferente de</option>
                   <option value="NOT ">NOT</option>
                   <option value="LIKE ">LIKE</option>
               </select>
             </div>
               <br>
 
-            <div class="form-group col-md-6">  
+            <div>  
               <label for="">Valor da Pesquisa:</label>
                 <input class="form-control" type="text" name="txtValor2" id="valor2" placeholder="Ex: SP">
             </div>  
