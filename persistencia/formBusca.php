@@ -17,7 +17,6 @@
             <div class="form-group col-md-6">
               <label for="">Filtrar por:</label>
               <select class="custom-select" id="cmbCampo1" name="cmbCampo1" required>
-                  <option selected hidden >Filtro</option>
                   <option value="id">ID</option>
                   <option value="nome">Nome</option>
                   <option value="idade">Idade</option>
@@ -30,9 +29,8 @@
             <br>
 
             <div class="form-group col-md-6">
-              <label for="">Operador Relacionais:</label>
+              <label for="">Operador Relacional:</label>
               <select class="custom-select" id="cmbOperador1" name="cmbOperador1" required>
-                  <option selected hidden>Operador</option>
                   <option value="> ">Maior que</option>
                   <option value="< ">Menor que</option>
                   <option value=">= ">Maior igual</option>
@@ -46,7 +44,7 @@
 
             <div class="form-group col-md-6">  
               <label for="">Valor da Pesquisa:</label>
-                  <input class="form-control" type="text" name="valor1" id="valor1" placeholder="Ex: Porto Ferreira" required>
+                  <input class="form-control" type="text" name="txtValor1" id="valor1" placeholder="Ex: Porto Ferreira" required>
             </div>
             <br>
             
@@ -85,7 +83,7 @@
             <br>
 
             <div class="form-group col-md-6">
-              <label for="">Operador Relacionais:</label>
+              <label for="">Operador Relacional:</label>
               <select class="custom-select" id="cmbOperador2" name="cmbOperador2">
                   <option selected hidden>Operador</option>
                   <option value="> ">Maior que</option>
@@ -101,7 +99,7 @@
 
             <div class="form-group col-md-6">  
               <label for="">Valor da Pesquisa:</label>
-                <input class="form-control" type="text" name="valor2" id="valor2" placeholder="Ex: SP">
+                <input class="form-control" type="text" name="txtValor2" id="valor2" placeholder="Ex: SP">
             </div>  
             <input class="btn btn-outline-success" type="submit" value="Enviar">
         </form>

@@ -1,4 +1,5 @@
 <?php
+
 	error_reporting(0);
 	//carrega as classes necessárias
 	require_once 'classes/api/Expression.php';
@@ -7,16 +8,23 @@
 
 	$cmbCampo1 = $_POST['cmbCampo1'];
 	$cmbOperador1 = $_POST['cmbOperador1'];
-	$valor1 = $_POST['valor1'];
+	$valor1 = $_POST['txtValor1'];
 	
 	$opLogico = $_POST['cmbOpLogico'];
 
 	$cmbCampo2 = $_POST['cmbCampo2'];
 	$cmbOperador2 = $_POST['cmbOperador2'];
-	$valor2 = $_POST['valor2'];
+	$valor2 = $_POST['txtValor2'];
 
+	echo $cmbCampo1 . "<br>";
+	echo $cmbOperador1 . "<br>";
+	echo $valor1 . "<br>";
+	echo $opLogico . "<br>";
+	echo $cmbCampo2 . "<br>";
+	echo $cmbOperador2 . "<br>";
+	echo $valor2 . "<br>";
 
-	if(empty($cmbCampo1) AND empty($cmbOperador1) AND empty($valor1))
+	if(empty($cmbCampo1) OR empty($cmbOperador1) OR empty($valor1))
 	{
 	?>
 		<script>
@@ -47,7 +55,10 @@
 	// Utilizando 1 Critério de Busca
 
 	$criteria = new Criteria;
-	$criteria->add(new Filter('$cmbCampo1', '$cmbOperador1', '$valor1'));
+	$criteria->add(new Filter($cmbCampo1, $cmbOperador1, $valor1));
+	print $criteria->dump() . "<br>";
+
+	/*
 
 	//critério simples com AND e filtros com vetores de inteiros
 	$criteria = new Criteria;
@@ -88,7 +99,7 @@
 	$criteria->add($criteria1, Expression::OR_OPERATOR);
 	$criteria->add($criteria2, Expression::OR_OPERATOR);
 	print $criteria->dump() . "<br>";
-
+	*/
 
 	
 ?>

@@ -1,56 +1,63 @@
 <?php
-	/*
-	Vamos neste arquivo escrever os tipos de expressão que podem existir. O tipo mais simples que podemos imaginar é composto de três partes: um campo, um operador e um valor (ex.: salario > 3000), de modo que salario é o campo, > é o operador e 3000 é o valor a ser comparado. Essa expressão representa um filtro de seleção. Então o filtro é o primeiro tipo de expressão que podemos representar.
+	/*Essa classe basicamente terá o método add(), que adicionará uma nova expressão a uma lista de expressões. A princípio adicionaremos objetos do tipo Filter, podendo formar uma expressão contendo diversos filtros.
 
-	Para implementar um filtro, criamos a classe Filter, que é filha da classe Expression, ou seja, herda da classe Expression. Um objeto Filter receberá em seu método construtor os três parametros (variável, operador e valor) e tratará de armazena-las internamente. No entanto antes de armazenar o valor precisamos tratá-lo, afinal o PHP suporta diversos tipos de dados em uma String plana para que seja montado o SQL final. Esse será o papel do método transform(), que fará vários testes para descobrir o tipo do valor e realizará as conversões necessárias. Isso é necessário porque alguns tipos de dados como o array são representados diferentemente no PHP e no banco de dados. Ao tipo String, por exemplo, devemos adicionar aspas antes de enviar para o banco.
-	Importante: notem que aqui não estamos utilizando Prepared Statements, a melhor técnica para prevenção de ataques contra SQL Injection.
+	A grande vantagem da classe Criteria é que ela permitirá compor não somente objetos do tipo Filter, mais também objetos Criteria. Como um Criteria pode ser formado por vários Filter, temos aí um caminho para compor expressões recursivamente. Essa formação é um implementação de um Design Pattern chamado Composite, que permite criar um objeto composto, contendo relações todo-parte, de modo que você pode tratar exatamente da mesma forma objetos individuais, bem como objetos compostos. Analise a modelagem "composição de critérios" (Composite Pattern para composição de filtros), criada durante aula, nela é possível notar que um Criteria pode ser composto por uma Expression, que por sua vez pode ser um Filter ou mesmo outro Criteria.
+
+	Depois de utilizarmos o método add() para adicionar filtros (Filter) ou critérios (Critéria), faremos uso do método dump() para converter essa cadeia de expressões no formato de String plana. O método dump() percorrerá a lista de expressões colhendo o retorno da execução do método dump() de cada expressão. Isto é possível porque todas as classes da hierarquia implementam o método dump(), visto que ele é abstrato na classe pai. Ao final, poderemos ter uma cadeia de expressões lógicas como a da figura "Uma expressão composta". Verificar figura na modelagem criada em aula.
+
+	A classe Criteria terá o método add(), que permitirá adicionar qualquer objeto do tipo Expression, que por sua vez poderá ser Criteria ou Filter, adicionando esse objeto ao atributo expressions. O método dump() irá percorrer o vetor expressions, executando o método dump() de cada expressão composta. Neste momento, o dump() executado poderá ser de um objeto da classe Criteria ou Filter. Caso seja da classe Criteria, temos aí uma composição recursiva, o que confere grande poder a essa estrutura.
+
+	Um critério é utilizado em conjunto com algumas instruções como o SELECT. Assim, frequentemente precisamos definir outras características como ordenação (ORDER BY) ou o intervalo da consulta (OFFSET e LIMIT). Para definir tais características, criaremos o método setProperty(), que receberá dois parametros: a propriedade (ORDER, OFFSET, LIMIT) e o seu valor. Para retornar o valor de uma propriedade, utilizaremos o método getProperty(). As propriedades serão armazenadas no array $properties.
 	*/
-	class Filter extends Expression{
-		private $variable; //variável para receber o campo
-		private $operator; //operador
-		private $value; //valor
+	class Criteria extends Expression {
+		private $expressions; //armazena a lista de expressões 
+		private $operators; //armazena a lista de operadores 
+		private $properties; //propriedades do critério
 
-		public function __construct($variable, $operator, $value){
-			//armazena as propriedades passadas por paramentro ao construtor, inserindo seus dados nos atributos da classe Filter
-			$this->variable = $variable;
-			$this->operator = $operator;
-			
-			//transforma o valor de acordo com certas regras de tipo
-			$this->value = $this->transform($value);
+		function __construct(){
+			$this->expressions = array();
+			$this->operators = array(); 
 		}
 
-		private function transform($value){
-			//caso seja um array
-			if(is_array($value)){
-				foreach($value as $x){
-					if(is_integer($x)){
-						$foo[] = $x;
-					}else if(is_string($x)){
-						$foo[] = "'$x'";
-					}//fecha o else if
-				}//fecha o foeach
-
-				//converte o array em string separada por ","
-				$result = '(' . implode(',', $foo) . ')';
-			}//fecha o if
-			else if(is_string($value)){
-				$result = "'$value'";
+		public function add(Expression $expression, $operator = self::AND_OPERATOR) {
+			 //NA PRIMEIRA VEZ NÃO PRECISAMOS CONCATENAR
+			if(empty($this->expressions)){
+				$operator = NULL;
 			}
-			else if(is_null($value)){
-				$result = 'NULL';
-			}
-			else if(is_bool($value)){
-				$result = $value ? 'TRUE' : 'FALSE';
-			}
-			else {
-				$result = $value;
-			}
-			return $result;
-		}//fecha o método transform
+			//AGREGA O RESULTADO DA EXPRESSÃO À LISTA DE EXPRESSÕES
+			$this->expressions[] = $expression;
+			$this->operators[] = $operator;
+		}
 
 		public function dump(){
-			//concatena (monta) a expressão
-			return "{$this->variable} {$this->operator} {$this->value}";
-		}//fecha metodo dump
-	}//fecha classe Filter
+			//concatena a lista das expressões
+			if(is_array($this->expressions)){
+				if(count($this->expressions > 0)){
+					$result = '';
+					foreach ($this->expressions as $i => $expression) {
+						$operator = $this->operators[$i];
+						//concatena o operador com a respectiva expressão
+						$result .= $operator . $expression->dump() . ' ';
+					}
+					$result = trim($result);
+					return "({$result})";
+				}
+			}
+		}
+
+		public function setProperty($property, $value){
+			if (isset($value)){
+				$this->properties[$property] = $value;
+			}else{
+				$this->properties[$property] = NULL;
+			}
+		}
+
+		public function getProperty($property){
+			if(isset($this->properties[$property])){
+				return $this->properties[$property];
+			}
+		}
+	}
+	
 ?>
